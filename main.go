@@ -82,7 +82,7 @@ func main() {
 	dbTable := "user_technician";
 	filestr :=StrFirstToUpper(dbName+dbTable)
 	file := pwd+"/proto/"+filestr+".proto"
-	db, err := Connect("mysql", "juran:JrGJ@0325#@!@tcp(39.107.82.101:3306)/"+dbName+"?charset=utf8mb4&parseTime=true")
+	db, err := Connect("mysql", "root:root@tcp(127.0.0.1:3306)/"+dbName+"?charset=utf8mb4&parseTime=true")
 
 	//Table names to be excluded
 	//exclude := map[string]int{"": 1}
