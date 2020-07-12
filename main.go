@@ -76,12 +76,16 @@ type AttrDetail struct {
 }
 
 func main() {
-	tpl := "d:/gopath/src/mysql-to-proto/template/proto.go.tpl"
-	file := "d:/gopath/src/mysql-to-proto/sso.proto"
-	dbName := "user"
-	db, err := Connect("mysql", "root:123456@tcp(127.0.0.1:3306)/"+dbName+"?charset=utf8mb4&parseTime=true")
+	pwd,_ := os.Getwd() //获取当前目录
+	tpl := pwd+"/template/proto.go.tpl"
+	dbName := "juranwuyou-user"
+	dbTable := "user_technician";
+	filestr :=StrFirstToUpper(dbName+dbTable)
+	file := pwd+"/proto/"+filestr+".proto"
+	db, err := Connect("mysql", "juran:JrGJ@0325#@!@tcp(39.107.82.101:3306)/"+dbName+"?charset=utf8mb4&parseTime=true")
+
 	//Table names to be excluded
-	exclude := map[string]int{"user_log": 1}
+	//exclude := map[string]int{"": 1}
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -119,20 +123,22 @@ func main() {
 		},
 	}
 
-	t.PackageModels = "sso"
-	t.ServiceName = "Sso"
+	t.PackageModels = StrFirstToUpper(dbName)
+	t.ServiceName = StrFirstToUpper(dbTable)
 	t.Method = map[string]MethodDetail{
 		"Get":    {Request: t.Message["Filter"], Response: t.Message["Request"]},
 		"Create": {Request: t.Message["Request"], Response: t.Message["Response"]},
 		"Update": {Request: t.Message["Request"], Response: t.Message["Response"]},
 	}
-	t.TableColumn(db, dbName, exclude)
+	t.TableColumn(db, dbName,dbTable)
 	t.Generate(file, tpl)
 }
 
 //Extract table field information
-func (table *Table) TableColumn(db *sql.DB, dbName string, exclude map[string]int) {
-	rows, err := db.Query("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + dbName + "'")
+func (table *Table) TableColumn(db *sql.DB, dbName,dbTable string) {
+	//rows, err := db.Query("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND t.`TABLE_SCHEMA`='" + dbName + "'")
+
+	rows,err := db.Query("SELECT t.TABLE_NAME,t.TABLE_COMMENT,c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND c.TABLE_NAME in ('" + dbTable + "') AND t.`TABLE_SCHEMA`='" + dbName + "'")
 	defer db.Close()
 	defer rows.Close()
 	var name, comment string
@@ -145,9 +151,9 @@ func (table *Table) TableColumn(db *sql.DB, dbName string, exclude map[string]in
 	table.Name = make(map[string][]Column)
 	for rows.Next() {
 		rows.Scan(&name, &comment, &column.Field, &column.Type, &column.Comment)
-		if _, ok := exclude[name]; ok {
-			continue
-		}
+//		if _, ok := exclude[name]; ok {
+//			continue
+//		}
 		if _, ok := table.Comment[name]; !ok {
 			table.Comment[name] = comment
 		}
@@ -183,6 +189,7 @@ func (table *Table) Generate(filepath, tpl string) {
 	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_WRONLY, 0755)
 	err = tmpl.Execute(file, rpcservers)
 	if err != nil {
+		fmt.Println(filepath)
 		fmt.Fprintf(os.Stderr, "Fatal error: ", err)
 		return
 	}
@@ -256,7 +263,9 @@ func TypeMToP(m string) string {
 	return "string"
 }
 func StrFirstToUpper(str string) string {
+	str = strings.Replace(str,"-","_",-1)
 	temp := strings.Split(str, "_")
+
 	var upperStr string
 	for _, v := range temp {
 		if len(v) > 0 {

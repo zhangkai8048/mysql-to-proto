@@ -3,12 +3,12 @@ package {{.Models}};
 
 // The {{.Models}} service definition.
 service {{.Name}} {
- {{range .Funcs }} rpc {{.Name}}({{.RequestName}}) returns () { {{.ResponseName}} }
+ {{range .Funcs }} rpc {{.Name}}({{.RequestName}}) returns ({{.ResponseName}}) {}
 {{ end }}
 }
 {{range .MessageList }}
 message {{.Name}} {
-{{range .MessageDetail }} {{.TypeName}} {{.AttrName}}={{.Num}}
+{{range .MessageDetail }} {{.TypeName}} {{.AttrName}}={{.Num}} ;
 {{ end }}
 }
 {{ end }}

@@ -1,0 +1,71 @@
+syntax = "proto3";
+package JuranwuyouUser;
+
+// The JuranwuyouUser service definition.
+service UserMerchant {
+  rpc UpdateUserMerchant(UserMerchantRequest) returns (UserMerchantResponse) {}
+ rpc GetUserMerchant(UserMerchantFilter) returns (UserMerchantRequest) {}
+ rpc CreateUserMerchant(UserMerchantRequest) returns (UserMerchantResponse) {}
+
+}
+
+message UserMerchantRequest {
+ sint64 id=1 ;
+ string code=2 ;
+ sint64 user_id=3 ;
+ sint64 pass_id=4 ;
+ string name=5 ;
+ int32 type=6 ;
+ int32 category=7 ;
+ string cert_no=8 ;
+ string legal_person_name=9 ;
+ int32 is_certification=10 ;
+ sint64 province_id=11 ;
+ sint64 city_id=12 ;
+ sint64 area_id=13 ;
+ string city_ids=14 ;
+ string business_scope=15 ;
+ string service_category_ids=16 ;
+ string address=17 ;
+ double address_lng=18 ;
+ double address_lat=19 ;
+ string mobile=20 ;
+ string bank_name=21 ;
+ string bank_no=22 ;
+ int32 is_audit=23 ;
+ int32 is_enabled=24 ;
+ int32 is_delete=25 ;
+ string main_person=26 ;
+ string business_address=27 ;
+ string credit_code=28 ;
+ string tax_no=29 ;
+ sint64 create_user_id=30 ;
+ string create_time=31 ;
+ sint64 update_user_id=32 ;
+ string update_time=33 ;
+ int32 version=34 ;
+ int32 open_remind=35 ;
+ string merchant_extend=36 ;
+ int32 merchant_level=37 ;
+ sint64 parent_id=38 ;
+ int32 assets_type=39 ;
+ sint64 settle_party_id=40 ;
+ int32 service_type=41 ;
+ int32 cooperation_type=42 ;
+ int32 sort=43 ;
+ string skill_ids=44 ;
+
+}
+
+message UserMerchantFilter {
+ uint64 id=1 ;
+
+}
+
+message UserMerchantResponse {
+ uint64 id=1 ;
+ bool success=2 ;
+
+}
+
+

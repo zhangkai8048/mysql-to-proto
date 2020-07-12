@@ -1,0 +1,80 @@
+syntax = "proto3";
+package JuranwuyouUser;
+
+// The JuranwuyouUser service definition.
+service UserTechnician {
+  rpc GetUserTechnician(UserTechnicianFilter) returns (UserTechnicianRequest) {}
+ rpc CreateUserTechnician(UserTechnicianRequest) returns (UserTechnicianResponse) {}
+ rpc UpdateUserTechnician(UserTechnicianRequest) returns (UserTechnicianResponse) {}
+
+}
+
+message UserTechnicianRequest {
+ sint64 id=1 ;
+ string code=2 ;
+ sint64 merchant_id=3 ;
+ sint64 user_id=4 ;
+ sint64 worker_id=5 ;
+ int32 service_status=6 ;
+ string mobile=7 ;
+ sint64 province_id=8 ;
+ sint64 city_id=9 ;
+ sint64 area_id=10 ;
+ string service_product_ids=11 ;
+ string contact_name=12 ;
+ string contact_mobile=13 ;
+ string referrer_name=14 ;
+ string referrer_mobile=15 ;
+ string remark=16 ;
+ int32 is_enabled=17 ;
+ int32 is_delete=18 ;
+ int32 status=19 ;
+ string registration_form=20 ;
+ string health_cert=21 ;
+ string health_cert_expiry_date=22 ;
+ string examination_report=23 ;
+ string job_seniority_card=24 ;
+ string positional_titles=25 ;
+ string create_time=26 ;
+ sint64 create_user_id=27 ;
+ string update_time=28 ;
+ sint64 update_user_id=29 ;
+ int32 version=30 ;
+ string address=31 ;
+ int32 examine_status=32 ;
+ string intentional_skill_ids=33 ;
+ int32 age=34 ;
+ int32 work_age=35 ;
+ int32 activation_status=36 ;
+ string bank_name=37 ;
+ string bank_no=38 ;
+ string other_certificates=39 ;
+ int32 settlement_type=40 ;
+ string settlement_prompt=41 ;
+ int32 subordinate_type=42 ;
+ sint64 accept_count=43 ;
+ string id_card=44 ;
+ string id_card_validity_period=45 ;
+ string id_card_img=46 ;
+ int32 account_status=47 ;
+ string centre_address=48 ;
+ string centre_lng=49 ;
+ string centre_lat=50 ;
+ int32 overstep_area_type=51 ;
+ double price_starting=52 ;
+ double price_unit=53 ;
+
+}
+
+message UserTechnicianFilter {
+ uint64 id=1 ;
+
+}
+
+message UserTechnicianResponse {
+ uint64 id=1 ;
+ bool success=2 ;
+
+}
+
+
